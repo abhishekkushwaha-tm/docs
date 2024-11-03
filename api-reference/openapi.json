@@ -1,195 +1,9335 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
-  "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
-    }
-  }
+"openapi": "3.0.1",
+"info": {
+"title": "TrainingMug Practice Platform API",
+"description": "APIs for TrainingMug Practice Platform",
+"version": "1.0"
+},
+"servers": [
+{
+"url": "http://localhost:8080",
+"description": "Local server"
+}
+],
+"paths": {
+"/api/private/user/change-password": {
+"put": {
+"tags": [
+"user-controller-private"
+],
+"operationId": "changePassword",
+"parameters": [
+{
+"name": "oldPassword",
+"in": "query",
+"required": true,
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "newPassword",
+"in": "query",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/user/": {
+"get": {
+"tags": [
+"user-controller-private"
+],
+"operationId": "getSelfDetails",
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"put": {
+"tags": [
+"user-controller-private"
+],
+"operationId": "updateSelf",
+"parameters": [
+{
+"name": "userCredentials",
+"in": "query",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"type": "object",
+"properties": {
+"profilePicture": {
+"type": "string",
+"format": "binary"
+},
+"resumeFile": {
+"type": "string",
+"format": "binary"
+},
+"undergraduateCertificateFile": {
+"type": "string",
+"format": "binary"
+},
+"seniorSecondaryCertificateFile": {
+"type": "string",
+"format": "binary"
+},
+"secondaryCertificateFile": {
+"type": "string",
+"format": "binary"
+}
+}
+}
+}
+}
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"delete": {
+"tags": [
+"user-controller-private"
+],
+"operationId": "deleteSelf",
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/statistics/update-ongoing-topic/{courseId}/{topicId}": {
+"put": {
+"tags": [
+"statistics-controller-private"
+],
+"operationId": "updateOngoingTopicOfCourse",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "topicId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/statistics/update-ongoing-quiz/{courseId}/{quizId}": {
+"put": {
+"tags": [
+"statistics-controller-private"
+],
+"operationId": "updateOngoingQuizOfCourse",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "quizId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/statistics/update-ongoing-coding-exercise/{courseId}/{codingExerciseId}": {
+"put": {
+"tags": [
+"statistics-controller-private"
+],
+"operationId": "updateOngoingCodingExerciseOfCourse",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "codingExerciseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/statistics/update-ongoing-capstone-project/{courseId}/{capstoneProjectId}": {
+"put": {
+"tags": [
+"statistics-controller-private"
+],
+"operationId": "updateOngoingCapstoneProjectOfCourse",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "capstoneProjectId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/capstone-project/{capstoneProjectId}/evaluate": {
+"put": {
+"tags": [
+"capstone-project-controller-private"
+],
+"operationId": "evaluateCapstoneProject",
+"parameters": [
+{
+"name": "capstoneProjectId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/topic/{topicId}": {
+"get": {
+"tags": [
+"topic-controller-employee"
+],
+"operationId": "getTopic_1",
+"parameters": [
+{
+"name": "topicId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "includeOnlyApproved",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+},
+{
+"name": "associateApproval",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"put": {
+"tags": [
+"topic-controller-employee"
+],
+"operationId": "updateTopic",
+"parameters": [
+{
+"name": "topicId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/TopicRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"delete": {
+"tags": [
+"topic-controller-employee"
+],
+"operationId": "deleteTopic",
+"parameters": [
+{
+"name": "topicId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/statistics/update-ongoing-topic/{courseId}/{topicId}": {
+"put": {
+"tags": [
+"statistics-controller-employee"
+],
+"operationId": "updateOngoingTopicOfCourse_1",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "topicId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "userId",
+"in": "query",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/statistics/update-ongoing-quiz/{courseId}/{quizId}": {
+"put": {
+"tags": [
+"statistics-controller-employee"
+],
+"operationId": "updateOngoingQuizOfCourse_1",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "quizId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "userId",
+"in": "query",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/statistics/update-ongoing-coding-exercise/{courseId}/{codingExerciseId}": {
+"put": {
+"tags": [
+"statistics-controller-employee"
+],
+"operationId": "updateOngoingCodingExerciseOfCourse_1",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "codingExerciseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "userId",
+"in": "query",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/statistics/update-ongoing-capstone-project/{courseId}/{capstoneProjectId}": {
+"put": {
+"tags": [
+"statistics-controller-employee"
+],
+"operationId": "updateOngoingCapstoneProjectOfCourse_1",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "capstoneProjectId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "userId",
+"in": "query",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/quiz/{quizId}": {
+"get": {
+"tags": [
+"quiz-controller-employee"
+],
+"operationId": "getQuiz_1",
+"parameters": [
+{
+"name": "quizId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "associateApproval",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"put": {
+"tags": [
+"quiz-controller-employee"
+],
+"operationId": "updateQuiz",
+"parameters": [
+{
+"name": "quizId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/QuizRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"delete": {
+"tags": [
+"quiz-controller-employee"
+],
+"operationId": "deleteQuiz",
+"parameters": [
+{
+"name": "quizId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/quiz/{quizId}/reset-attempts/{userId}": {
+"put": {
+"tags": [
+"quiz-controller-employee"
+],
+"operationId": "resetAttempts",
+"parameters": [
+{
+"name": "quizId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "userId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/quiz/question/{questionId}": {
+"put": {
+"tags": [
+"quiz-controller-employee"
+],
+"operationId": "updateQuestion",
+"parameters": [
+{
+"name": "questionId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/QuestionRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"delete": {
+"tags": [
+"quiz-controller-employee"
+],
+"operationId": "deleteQuestion",
+"parameters": [
+{
+"name": "questionId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/instructor/{id}": {
+"get": {
+"tags": [
+"instructor-controller"
+],
+"operationId": "getInstructorById",
+"parameters": [
+{
+"name": "id",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"put": {
+"tags": [
+"instructor-controller"
+],
+"operationId": "updateInstructor",
+"parameters": [
+{
+"name": "instructorCredentials",
+"in": "query",
+"required": true,
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "id",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"type": "object",
+"properties": {
+"profileImage": {
+"type": "string",
+"format": "binary"
+},
+"resumeFile": {
+"type": "string",
+"format": "binary"
+}
+}
+}
+}
+}
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"delete": {
+"tags": [
+"instructor-controller"
+],
+"operationId": "deleteById",
+"parameters": [
+{
+"name": "id",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/course/{courseId}": {
+"get": {
+"tags": [
+"course-controller-employee"
+],
+"operationId": "getCourseById_1",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "includeOnlyApproved",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+},
+{
+"name": "associateApproval",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"put": {
+"tags": [
+"course-controller-employee"
+],
+"operationId": "updateCourse",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "course",
+"in": "query",
+"required": true,
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"type": "object",
+"properties": {
+"thumbnail": {
+"type": "string",
+"format": "binary"
+}
+}
+}
+}
+}
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"delete": {
+"tags": [
+"course-controller-employee"
+],
+"operationId": "deleteCourse",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/coding-exercise/{codingExerciseId}": {
+"get": {
+"tags": [
+"coding-exercise-controller-employee"
+],
+"operationId": "getCodingExercise_1",
+"parameters": [
+{
+"name": "codingExerciseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "associateApproval",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"put": {
+"tags": [
+"coding-exercise-controller-employee"
+],
+"operationId": "updateCodingExercise",
+"parameters": [
+{
+"name": "codingExerciseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/CodingExerciseRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"delete": {
+"tags": [
+"coding-exercise-controller-employee"
+],
+"operationId": "deleteCodingExercise",
+"parameters": [
+{
+"name": "codingExerciseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/coding-exercise/{codingExerciseId}/reset-attempts/{userId}": {
+"put": {
+"tags": [
+"coding-exercise-controller-employee"
+],
+"operationId": "resetAttempts_1",
+"parameters": [
+{
+"name": "codingExerciseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "userId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/chapter/{chapterId}": {
+"get": {
+"tags": [
+"chapter-controller-employee"
+],
+"operationId": "getChapter_1",
+"parameters": [
+{
+"name": "chapterId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "associateApproval",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+},
+{
+"name": "includeOnlyApproved",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"put": {
+"tags": [
+"chapter-controller-employee"
+],
+"operationId": "updateChapter",
+"parameters": [
+{
+"name": "chapterId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ChapterRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"delete": {
+"tags": [
+"chapter-controller-employee"
+],
+"operationId": "deleteChapter",
+"parameters": [
+{
+"name": "chapterId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/capstone-project/{capstoneProjectId}": {
+"get": {
+"tags": [
+"capstone-project-controller-employee"
+],
+"operationId": "getCapstoneProject_1",
+"parameters": [
+{
+"name": "capstoneProjectId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "associateApproval",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"put": {
+"tags": [
+"capstone-project-controller-employee"
+],
+"operationId": "updateCapstoneProject",
+"parameters": [
+{
+"name": "capstoneProjectId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/CapstoneProjectRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"delete": {
+"tags": [
+"capstone-project-controller-employee"
+],
+"operationId": "deleteCapstoneProject",
+"parameters": [
+{
+"name": "capstoneProjectId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/capstone-project/{capstoneProjectId}/reset-attempts/{userId}": {
+"put": {
+"tags": [
+"capstone-project-controller-employee"
+],
+"operationId": "resetAttempts_2",
+"parameters": [
+{
+"name": "capstoneProjectId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "userId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/approval/{approvalId}/topic": {
+"put": {
+"tags": [
+"approval-controller-employee"
+],
+"operationId": "updateTopicApproval",
+"parameters": [
+{
+"name": "approvalId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "topicId",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int64",
+"default": -1
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/TopicRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/approval/{approvalId}/quiz": {
+"put": {
+"tags": [
+"approval-controller-employee"
+],
+"operationId": "updateQuizApproval",
+"parameters": [
+{
+"name": "approvalId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "quizId",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int64",
+"default": -1
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/QuizRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/approval/{approvalId}/quiz-question": {
+"put": {
+"tags": [
+"approval-controller-employee"
+],
+"operationId": "updateQuizQuestionApproval",
+"parameters": [
+{
+"name": "approvalId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "quizQuestionId",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int64",
+"default": -1
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/QuestionRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/approval/{approvalId}/publish": {
+"put": {
+"tags": [
+"approval-controller-employee"
+],
+"operationId": "publishApproval",
+"parameters": [
+{
+"name": "approvalId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/approval/{approvalId}/hide": {
+"put": {
+"tags": [
+"approval-controller-employee"
+],
+"operationId": "hideApproval",
+"parameters": [
+{
+"name": "approvalId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/approval/{approvalId}/course": {
+"put": {
+"tags": [
+"approval-controller-employee"
+],
+"operationId": "updateCourseApproval",
+"parameters": [
+{
+"name": "approvalId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "courseId",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int64",
+"default": -1
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/CourseRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/approval/{approvalId}/coding-exercise": {
+"put": {
+"tags": [
+"approval-controller-employee"
+],
+"operationId": "updateCodingExerciseApproval",
+"parameters": [
+{
+"name": "approvalId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "codingExerciseId",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int64",
+"default": -1
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/CodingExerciseRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/approval/{approvalId}/chapter": {
+"put": {
+"tags": [
+"approval-controller-employee"
+],
+"operationId": "updateChapterApproval",
+"parameters": [
+{
+"name": "approvalId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "chapterId",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int64",
+"default": -1
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ChapterRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/approval/{approvalId}/capstone-project": {
+"put": {
+"tags": [
+"approval-controller-employee"
+],
+"operationId": "updateCapstoneProjectApproval",
+"parameters": [
+{
+"name": "approvalId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "capstoneProjectId",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int64",
+"default": -1
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/CapstoneProjectRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/admin/user/{userId}": {
+"put": {
+"tags": [
+"user-controller-admin"
+],
+"operationId": "updateUser",
+"parameters": [
+{
+"name": "userId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "userCredentials",
+"in": "query",
+"required": true,
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "toggleStatus",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"type": "object",
+"properties": {
+"profileImage": {
+"type": "string",
+"format": "binary"
+}
+}
+}
+}
+}
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"delete": {
+"tags": [
+"user-controller-admin"
+],
+"operationId": "deleteUser_1",
+"parameters": [
+{
+"name": "userId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/webhook/register-attempt-details": {
+"post": {
+"tags": [
+"webhook-controller"
+],
+"operationId": "registerAttemptDetails",
+"parameters": [
+{
+"name": "Authorization",
+"in": "header",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/CapstoneProjectAttemptDetailsWebhookDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+}
+}
+},
+"/api/public/user/signup": {
+"post": {
+"tags": [
+"user-controller-public"
+],
+"operationId": "signup",
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/UserCredentials"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+}
+}
+},
+"/api/public/user/reset-password": {
+"post": {
+"tags": [
+"user-controller-public"
+],
+"operationId": "resetPassword",
+"parameters": [
+{
+"name": "email",
+"in": "query",
+"required": true,
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "password",
+"in": "query",
+"required": true,
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "token",
+"in": "query",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+}
+}
+},
+"/api/public/user/otp/validate": {
+"post": {
+"tags": [
+"user-controller-public"
+],
+"operationId": "validateOTP",
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/OTP"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+}
+}
+},
+"/api/public/user/login": {
+"post": {
+"tags": [
+"user-controller-public"
+],
+"operationId": "login",
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/UserCredentials"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+}
+}
+},
+"/api/public/user/forget-password/{email}": {
+"post": {
+"tags": [
+"user-controller-public"
+],
+"operationId": "forgetPassword",
+"parameters": [
+{
+"name": "email",
+"in": "path",
+"required": true,
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "redirectToUserPortal",
+"in": "query",
+"required": true,
+"schema": {
+"type": "boolean"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+}
+}
+},
+"/api/public/user/contact": {
+"post": {
+"tags": [
+"user-controller-public"
+],
+"operationId": "submitContactMessage",
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ContactMessage"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+}
+}
+},
+"/api/private/user/feedback": {
+"post": {
+"tags": [
+"user-controller-private"
+],
+"operationId": "sendFeedback",
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/FeedbackDetails"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/quiz/{quizId}/solve": {
+"post": {
+"tags": [
+"quiz-controller-private"
+],
+"operationId": "solveQuiz",
+"parameters": [
+{
+"name": "quizId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/QuizAnswerRequest"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/coding-exercise/{codingExerciseId}/solve": {
+"post": {
+"tags": [
+"coding-exercise-controller-private"
+],
+"operationId": "solveCode",
+"parameters": [
+{
+"name": "codingExerciseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/Code"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/capstone-project/{capstoneProjectId}/solve": {
+"post": {
+"tags": [
+"capstone-project-controller-private"
+],
+"operationId": "attemptCapstoneProject",
+"parameters": [
+{
+"name": "capstoneProjectId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/user/enroll": {
+"post": {
+"tags": [
+"user-controller-employee"
+],
+"operationId": "enrollUserToCourse",
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/EnrollmentDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/user/app-user": {
+"post": {
+"tags": [
+"user-controller-employee"
+],
+"operationId": "createAppUser",
+"parameters": [
+{
+"name": "userCredentials",
+"in": "query",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"type": "object",
+"properties": {
+"profileImage": {
+"type": "string",
+"format": "binary"
+}
+}
+}
+}
+}
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/topic/{chapterId}": {
+"post": {
+"tags": [
+"topic-controller-employee"
+],
+"operationId": "createTopic",
+"parameters": [
+{
+"name": "chapterId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/TopicRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/quiz/{topicId}": {
+"post": {
+"tags": [
+"quiz-controller-employee"
+],
+"operationId": "createQuiz",
+"parameters": [
+{
+"name": "topicId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/QuizRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/quiz/{quizId}/question": {
+"post": {
+"tags": [
+"quiz-controller-employee"
+],
+"operationId": "addQuestion",
+"parameters": [
+{
+"name": "quizId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/QuestionRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/instructor/tech-stack": {
+"post": {
+"tags": [
+"instructor-controller"
+],
+"operationId": "addTechStack",
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/TechStackName"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/instructor/": {
+"post": {
+"tags": [
+"instructor-controller"
+],
+"operationId": "createInstructor",
+"parameters": [
+{
+"name": "instructorCredentials",
+"in": "query",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"type": "object",
+"properties": {
+"profileImage": {
+"type": "string",
+"format": "binary"
+},
+"resumeFile": {
+"type": "string",
+"format": "binary"
+}
+}
+}
+}
+}
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/course/": {
+"post": {
+"tags": [
+"course-controller-employee"
+],
+"operationId": "createCourse",
+"parameters": [
+{
+"name": "course",
+"in": "query",
+"required": true,
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"type": "object",
+"properties": {
+"thumbnail": {
+"type": "string",
+"format": "binary"
+}
+}
+}
+}
+}
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/coding-exercise/{topicId}": {
+"post": {
+"tags": [
+"coding-exercise-controller-employee"
+],
+"operationId": "createCodingExercise",
+"parameters": [
+{
+"name": "topicId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/CodingExerciseRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/coding-exercise/languages/": {
+"get": {
+"tags": [
+"language-controller"
+],
+"operationId": "getAllLanguages",
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"post": {
+"tags": [
+"language-controller"
+],
+"operationId": "addLanguage",
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/LanguageName"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/chapter/{courseId}": {
+"post": {
+"tags": [
+"chapter-controller-employee"
+],
+"operationId": "createChapter",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ChapterRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/capstone-project/{courseId}": {
+"post": {
+"tags": [
+"capstone-project-controller-employee"
+],
+"operationId": "createCapstoneProject",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "title",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "description",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/CapstoneProjectRevisionDTO"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/admin/user/tm-user": {
+"post": {
+"tags": [
+"user-controller-admin"
+],
+"operationId": "createTMUser",
+"parameters": [
+{
+"name": "userCredentials",
+"in": "query",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"type": "object",
+"properties": {
+"profileImage": {
+"type": "string",
+"format": "binary"
+}
+}
+}
+}
+}
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/admin/topic/re-validate/{topicId}": {
+"post": {
+"tags": [
+"topic-controller-admin"
+],
+"operationId": "reValidateTopic",
+"parameters": [
+{
+"name": "topicId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/admin/quiz/re-validate/{quizId}": {
+"post": {
+"tags": [
+"quiz-controller-admin"
+],
+"operationId": "reValidateQuiz",
+"parameters": [
+{
+"name": "quizId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/admin/quiz/re-validate/question/{questionId}": {
+"post": {
+"tags": [
+"quiz-controller-admin"
+],
+"operationId": "reValidateQuestion",
+"parameters": [
+{
+"name": "questionId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/admin/course/re-validate/{courseId}": {
+"post": {
+"tags": [
+"course-controller-admin"
+],
+"operationId": "reValidateCourse",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/admin/coding-exercise/re-validate/{codingExerciseId}": {
+"post": {
+"tags": [
+"coding-exercise-controller-admin"
+],
+"operationId": "reValidateCodingExercise",
+"parameters": [
+{
+"name": "codingExerciseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/admin/chapter/re-validate/{chapterId}": {
+"post": {
+"tags": [
+"chapter-controller-admin"
+],
+"operationId": "reValidateChapter",
+"parameters": [
+{
+"name": "chapterId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/admin/capstone-project/re-validate/{capstoneProjectId}": {
+"post": {
+"tags": [
+"capstone-project-controller-admin"
+],
+"operationId": "reValidateCapstoneProject",
+"parameters": [
+{
+"name": "capstoneProjectId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/admin/approval/{approvalId}/reject": {
+"post": {
+"tags": [
+"approval-controller-admin"
+],
+"operationId": "reject",
+"parameters": [
+{
+"name": "approvalId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "reason",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/admin/approval/{approvalId}/approve": {
+"post": {
+"tags": [
+"approval-controller-admin"
+],
+"operationId": "approve",
+"parameters": [
+{
+"name": "approvalId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/public/user/otp/regenerate/{email}": {
+"get": {
+"tags": [
+"user-controller-public"
+],
+"operationId": "regenerateOTP",
+"parameters": [
+{
+"name": "email",
+"in": "path",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+}
+}
+},
+"/api/public/user/exists/{email}": {
+"get": {
+"tags": [
+"user-controller-public"
+],
+"operationId": "existsByEmail",
+"parameters": [
+{
+"name": "email",
+"in": "path",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+}
+}
+},
+"/api/private/user/quote": {
+"get": {
+"tags": [
+"user-controller-private"
+],
+"operationId": "getQuote",
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/user/check-enrolled/{courseId}": {
+"get": {
+"tags": [
+"user-controller-private"
+],
+"operationId": "checkEnrolled",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/topic/{topicId}": {
+"get": {
+"tags": [
+"topic-controller-private"
+],
+"operationId": "getTopic",
+"parameters": [
+{
+"name": "topicId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/topic/all": {
+"get": {
+"tags": [
+"topic-controller-private"
+],
+"operationId": "getAllTopics",
+"parameters": [
+{
+"name": "chapterId",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "associateApproval",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+},
+{
+"name": "topicName",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "name"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/statistics/streak": {
+"get": {
+"tags": [
+"statistics-controller-private"
+],
+"operationId": "getStreak",
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/statistics/course-topic-stats/{courseId}": {
+"get": {
+"tags": [
+"statistics-controller-private"
+],
+"operationId": "getCourseTopicStats",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/statistics/course-stats": {
+"get": {
+"tags": [
+"statistics-controller-private"
+],
+"operationId": "getCourseStats",
+"parameters": [
+{
+"name": "completed",
+"in": "query",
+"required": true,
+"schema": {
+"type": "boolean"
+}
+},
+{
+"name": "page",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "size",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/statistics/course-stats/{courseId}": {
+"get": {
+"tags": [
+"statistics-controller-private"
+],
+"operationId": "getCourseStats_1",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/quiz/{quizId}": {
+"get": {
+"tags": [
+"quiz-controller-private"
+],
+"operationId": "getQuiz",
+"parameters": [
+{
+"name": "quizId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/quiz/{quizId}/attempts": {
+"get": {
+"tags": [
+"quiz-controller-private"
+],
+"operationId": "getQuizAttempts",
+"parameters": [
+{
+"name": "quizId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "attemptedOn"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/quiz/attempts": {
+"get": {
+"tags": [
+"quiz-controller-private"
+],
+"operationId": "getQuizAttemptsByUser",
+"parameters": [
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "attemptedOn"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/quiz/attempts-in-course/{courseId}": {
+"get": {
+"tags": [
+"quiz-controller-private"
+],
+"operationId": "getQuizAttemptsOfCourse",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "attemptedOn"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/quiz/attempt/{attemptId}": {
+"get": {
+"tags": [
+"quiz-controller-private"
+],
+"operationId": "getQuizAttempt",
+"parameters": [
+{
+"name": "attemptId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/quiz/all": {
+"get": {
+"tags": [
+"quiz-controller-private"
+],
+"operationId": "getAllEnrolledQuizzes",
+"parameters": [
+{
+"name": "topic",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "chapter",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "course",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "name",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "courseIds",
+"in": "query",
+"required": false,
+"schema": {
+"uniqueItems": true,
+"type": "array",
+"items": {
+"type": "integer",
+"format": "int64"
+}
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "name"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/leaderboard/quiz/{quizId}": {
+"get": {
+"tags": [
+"leaderboard-controller"
+],
+"operationId": "getQuizLeaderboard",
+"parameters": [
+{
+"name": "quizId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "page",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "size",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/leaderboard/quiz/{quizId}/user": {
+"get": {
+"tags": [
+"leaderboard-controller"
+],
+"operationId": "getQuizLeaderboard_1",
+"parameters": [
+{
+"name": "quizId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/leaderboard/course/{courseId}": {
+"get": {
+"tags": [
+"leaderboard-controller"
+],
+"operationId": "getCourseLeaderboard",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "page",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "size",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/leaderboard/course/{courseId}/user": {
+"get": {
+"tags": [
+"leaderboard-controller"
+],
+"operationId": "getCourseLeaderboard_1",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/leaderboard/coding-exercise/{codingExerciseId}": {
+"get": {
+"tags": [
+"leaderboard-controller"
+],
+"operationId": "getCodingExerciseLeaderboard",
+"parameters": [
+{
+"name": "codingExerciseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "page",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "size",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/leaderboard/coding-exercise/{codingExerciseId}/user": {
+"get": {
+"tags": [
+"leaderboard-controller"
+],
+"operationId": "getCodingExerciseLeaderboard_1",
+"parameters": [
+{
+"name": "codingExerciseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/leaderboard/capstone-project/{capstoneProjectId}": {
+"get": {
+"tags": [
+"leaderboard-controller"
+],
+"operationId": "getCapstoneProjectLeaderboard",
+"parameters": [
+{
+"name": "capstoneProjectId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "page",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "size",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/leaderboard/capstone-project/{capstoneProjectId}/user": {
+"get": {
+"tags": [
+"leaderboard-controller"
+],
+"operationId": "getCapstoneProjectLeaderboard_1",
+"parameters": [
+{
+"name": "capstoneProjectId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/course/{courseId}": {
+"get": {
+"tags": [
+"course-controller-private"
+],
+"operationId": "getCourseById",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/course/completed": {
+"get": {
+"tags": [
+"course-controller-private"
+],
+"operationId": "getCompletedCourses",
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/course/certificate/{courseId}": {
+"get": {
+"tags": [
+"course-controller-private"
+],
+"operationId": "getCertificate",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/course/all": {
+"get": {
+"tags": [
+"course-controller-private"
+],
+"operationId": "getEnrolledCourses",
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/coding-exercise/{codingExerciseId}": {
+"get": {
+"tags": [
+"coding-exercise-controller-private"
+],
+"operationId": "getCodingExercise",
+"parameters": [
+{
+"name": "codingExerciseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/coding-exercise/{codingExerciseId}/attempts": {
+"get": {
+"tags": [
+"coding-exercise-controller-private"
+],
+"operationId": "getAllAttempts",
+"parameters": [
+{
+"name": "codingExerciseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "attemptedOn"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/coding-exercise/attempts": {
+"get": {
+"tags": [
+"coding-exercise-controller-private"
+],
+"operationId": "getAllAttemptsByUser",
+"parameters": [
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "attemptedOn"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/coding-exercise/attempts-in-course/{courseId}": {
+"get": {
+"tags": [
+"coding-exercise-controller-private"
+],
+"operationId": "getCodingExerciseAttemptsOfCourse",
+"parameters": [
+{
+"name": "courseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "attemptedOn"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/coding-exercise/attempt/{attemptId}": {
+"get": {
+"tags": [
+"coding-exercise-controller-private"
+],
+"operationId": "getAttempt",
+"parameters": [
+{
+"name": "attemptId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/coding-exercise/all": {
+"get": {
+"tags": [
+"coding-exercise-controller-private"
+],
+"operationId": "getAllCodingExercises",
+"parameters": [
+{
+"name": "topic",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "chapter",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "course",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "name",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "courseIds",
+"in": "query",
+"required": false,
+"schema": {
+"uniqueItems": true,
+"type": "array",
+"items": {
+"type": "integer",
+"format": "int64"
+}
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "name"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/chapter/{chapterId}": {
+"get": {
+"tags": [
+"chapter-controller-private"
+],
+"operationId": "getChapter",
+"parameters": [
+{
+"name": "chapterId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/chapter/all": {
+"get": {
+"tags": [
+"chapter-controller-private"
+],
+"operationId": "getAllChapters",
+"parameters": [
+{
+"name": "courseId",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "chapterName",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "name"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/capstone-project/{capstoneProjectId}": {
+"get": {
+"tags": [
+"capstone-project-controller-private"
+],
+"operationId": "getCapstoneProject",
+"parameters": [
+{
+"name": "capstoneProjectId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/capstone-project/{capstoneProjectId}/ide": {
+"get": {
+"tags": [
+"capstone-project-controller-private"
+],
+"operationId": "getIDEDetails",
+"parameters": [
+{
+"name": "capstoneProjectId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/capstone-project/{capstoneProjectId}/attempts": {
+"get": {
+"tags": [
+"capstone-project-controller-private"
+],
+"operationId": "getAllAttemptsForCapstoneProject",
+"parameters": [
+{
+"name": "capstoneProjectId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "attemptedOn"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/capstone-project/attempts": {
+"get": {
+"tags": [
+"capstone-project-controller-private"
+],
+"operationId": "getAllAttempts_1",
+"parameters": [
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "attemptedOn"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/capstone-project/all": {
+"get": {
+"tags": [
+"capstone-project-controller-private"
+],
+"operationId": "getAllCapstoneProjects",
+"parameters": [
+{
+"name": "course",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "name",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "name"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/user/{userId}": {
+"get": {
+"tags": [
+"user-controller-employee"
+],
+"operationId": "getUserById",
+"parameters": [
+{
+"name": "userId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"delete": {
+"tags": [
+"user-controller-employee"
+],
+"operationId": "deleteUser",
+"parameters": [
+{
+"name": "userId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/user/tm-users": {
+"get": {
+"tags": [
+"user-controller-employee"
+],
+"operationId": "getAllTMUsers",
+"parameters": [
+{
+"name": "email",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "page",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "size",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "email"
+}
+},
+{
+"name": "direction",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/user/feedbacks": {
+"get": {
+"tags": [
+"user-controller-employee"
+],
+"operationId": "getFeedbacks",
+"parameters": [
+{
+"name": "isResolved",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+},
+{
+"name": "page",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "size",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "submittedOn"
+}
+},
+{
+"name": "direction",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "DESC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/user/app-users": {
+"get": {
+"tags": [
+"user-controller-employee"
+],
+"operationId": "getAllAppUsers",
+"parameters": [
+{
+"name": "email",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "page",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "size",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "email"
+}
+},
+{
+"name": "direction",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/user/all": {
+"get": {
+"tags": [
+"user-controller-employee"
+],
+"operationId": "getAllUsers",
+"parameters": [
+{
+"name": "email",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "page",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "size",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "email"
+}
+},
+{
+"name": "direction",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/topic/all": {
+"get": {
+"tags": [
+"topic-controller-employee"
+],
+"operationId": "getAllTopics_1",
+"parameters": [
+{
+"name": "chapterId",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "topicName",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "associateApproval",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+},
+{
+"name": "statuses",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"PENDING_CREATION_APPROVAL",
+"PENDING_UPDATE_APPROVAL",
+"PENDING_INVALIDATION_APPROVAL",
+"APPROVED",
+"INVALIDATED"
+]
+},
+"default": [
+"PENDING_CREATION_APPROVAL",
+"PENDING_INVALIDATION_APPROVAL",
+"PENDING_UPDATE_APPROVAL",
+"APPROVED",
+"INVALIDATED",
+"INVALIDATED"
+]
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "name"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/quiz/{topicId}/exists": {
+"get": {
+"tags": [
+"quiz-controller-employee"
+],
+"operationId": "exists",
+"parameters": [
+{
+"name": "topicId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "name",
+"in": "query",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/quiz/{quizId}/attempts/{userId}": {
+"get": {
+"tags": [
+"quiz-controller-employee"
+],
+"operationId": "getAttempts",
+"parameters": [
+{
+"name": "quizId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "userId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "attemptedOn"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/quiz/all": {
+"get": {
+"tags": [
+"quiz-controller-employee"
+],
+"operationId": "getAllQuizzes",
+"parameters": [
+{
+"name": "topic",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "chapter",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "course",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "associateApproval",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+},
+{
+"name": "name",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "name"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+},
+{
+"name": "statuses",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"PENDING_CREATION_APPROVAL",
+"PENDING_UPDATE_APPROVAL",
+"PENDING_INVALIDATION_APPROVAL",
+"APPROVED",
+"INVALIDATED"
+]
+},
+"default": [
+"PENDING_CREATION_APPROVAL",
+"PENDING_INVALIDATION_APPROVAL",
+"PENDING_UPDATE_APPROVAL",
+"APPROVED",
+"INVALIDATED",
+"INVALIDATED"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/instructor/tech-stack/all": {
+"get": {
+"tags": [
+"instructor-controller"
+],
+"operationId": "getAllTechStacks",
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/instructor/all": {
+"get": {
+"tags": [
+"instructor-controller"
+],
+"operationId": "getAll",
+"parameters": [
+{
+"name": "instructorName",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "name"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/course/logos": {
+"get": {
+"tags": [
+"course-controller-employee"
+],
+"operationId": "getLogos",
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/course/exists": {
+"get": {
+"tags": [
+"course-controller-employee"
+],
+"operationId": "exists_1",
+"parameters": [
+{
+"name": "name",
+"in": "query",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/course/all": {
+"get": {
+"tags": [
+"course-controller-employee"
+],
+"operationId": "getAllCourses",
+"parameters": [
+{
+"name": "courseName",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "associateApproval",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+},
+{
+"name": "statuses",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"PENDING_CREATION_APPROVAL",
+"PENDING_UPDATE_APPROVAL",
+"PENDING_INVALIDATION_APPROVAL",
+"APPROVED",
+"INVALIDATED"
+]
+},
+"default": [
+"PENDING_CREATION_APPROVAL",
+"PENDING_INVALIDATION_APPROVAL",
+"PENDING_UPDATE_APPROVAL",
+"APPROVED",
+"INVALIDATED",
+"INVALIDATED"
+]
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "name"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/coding-exercise/{codingExerciseId}/attempts/{userId}": {
+"get": {
+"tags": [
+"coding-exercise-controller-employee"
+],
+"operationId": "getAllAttempts_2",
+"parameters": [
+{
+"name": "codingExerciseId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "userId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "attemptedOn"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/coding-exercise/all": {
+"get": {
+"tags": [
+"coding-exercise-controller-employee"
+],
+"operationId": "getAllCodingExercises_1",
+"parameters": [
+{
+"name": "topic",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "chapter",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "course",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "associateApproval",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+},
+{
+"name": "name",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "name"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+},
+{
+"name": "statuses",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"PENDING_CREATION_APPROVAL",
+"PENDING_UPDATE_APPROVAL",
+"PENDING_INVALIDATION_APPROVAL",
+"APPROVED",
+"INVALIDATED"
+]
+},
+"default": [
+"PENDING_CREATION_APPROVAL",
+"PENDING_INVALIDATION_APPROVAL",
+"PENDING_UPDATE_APPROVAL",
+"APPROVED",
+"INVALIDATED",
+"INVALIDATED"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/chapter/all": {
+"get": {
+"tags": [
+"chapter-controller-employee"
+],
+"operationId": "getAllChapters_1",
+"parameters": [
+{
+"name": "courseId",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "chapterName",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "associateApproval",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+},
+{
+"name": "statuses",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"PENDING_CREATION_APPROVAL",
+"PENDING_UPDATE_APPROVAL",
+"PENDING_INVALIDATION_APPROVAL",
+"APPROVED",
+"INVALIDATED"
+]
+},
+"default": [
+"PENDING_CREATION_APPROVAL",
+"PENDING_INVALIDATION_APPROVAL",
+"PENDING_UPDATE_APPROVAL",
+"APPROVED",
+"INVALIDATED",
+"INVALIDATED",
+"INVALIDATED"
+]
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "name"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/capstone-project/get-capstone-projects": {
+"get": {
+"tags": [
+"capstone-project-controller-employee"
+],
+"operationId": "getGithubCapstoneProjects",
+"parameters": [
+{
+"name": "search",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "page",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/capstone-project/all": {
+"get": {
+"tags": [
+"capstone-project-controller-employee"
+],
+"operationId": "getAllCapstoneProjects_1",
+"parameters": [
+{
+"name": "course",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "name",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "associateApproval",
+"in": "query",
+"required": false,
+"schema": {
+"type": "boolean",
+"default": false
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "name"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "ASC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+},
+{
+"name": "statuses",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"PENDING_CREATION_APPROVAL",
+"PENDING_UPDATE_APPROVAL",
+"PENDING_INVALIDATION_APPROVAL",
+"APPROVED",
+"INVALIDATED"
+]
+},
+"default": [
+"PENDING_CREATION_APPROVAL",
+"PENDING_INVALIDATION_APPROVAL",
+"PENDING_UPDATE_APPROVAL",
+"APPROVED",
+"INVALIDATED"
+]
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/approval/{approvalId}": {
+"get": {
+"tags": [
+"approval-controller-employee"
+],
+"operationId": "getApprovalById",
+"parameters": [
+{
+"name": "approvalId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+},
+"delete": {
+"tags": [
+"approval-controller-employee"
+],
+"operationId": "deleteApproval",
+"parameters": [
+{
+"name": "approvalId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/approval/all": {
+"get": {
+"tags": [
+"approval-controller-employee"
+],
+"operationId": "getAllApprovals",
+"parameters": [
+{
+"name": "approvalStatuses",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"PENDING",
+"ACCEPTED",
+"REJECTED"
+]
+},
+"default": [
+"PENDING",
+"ACCEPTED",
+"REJECTED"
+]
+}
+},
+{
+"name": "approvalItems",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"COURSE",
+"CHAPTER",
+"TOPIC",
+"CODING_EXERCISE",
+"QUIZ",
+"CAPSTONE_PROJECT"
+]
+},
+"default": [
+"COURSE",
+"CHAPTER",
+"TOPIC",
+"CODING_EXERCISE",
+"QUIZ"
+]
+}
+},
+{
+"name": "approvalTypes",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"CREATE",
+"UPDATE",
+"INVALIDATE",
+"ADD_QUESTION",
+"UPDATE_QUESTION",
+"INVALIDATE_QUESTION"
+]
+},
+"default": [
+"CREATE",
+"UPDATE",
+"INVALIDATE",
+"ADD_QUESTION",
+"UPDATE_QUESTION",
+"INVALIDATE_QUESTION"
+]
+}
+},
+{
+"name": "visibility",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "boolean"
+},
+"default": [
+true,
+false
+]
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "requestedOn"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "DESC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/employee/approval/all/by-parent": {
+"get": {
+"tags": [
+"approval-controller-employee"
+],
+"operationId": "getAllApprovalsByParent",
+"parameters": [
+{
+"name": "approvalStatuses",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"PENDING",
+"ACCEPTED",
+"REJECTED"
+]
+},
+"default": [
+"PENDING",
+"ACCEPTED",
+"REJECTED"
+]
+}
+},
+{
+"name": "approvalItem",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"enum": [
+"COURSE",
+"CHAPTER",
+"TOPIC",
+"CODING_EXERCISE",
+"QUIZ",
+"CAPSTONE_PROJECT"
+]
+}
+},
+{
+"name": "approvalTypes",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"CREATE",
+"UPDATE",
+"INVALIDATE",
+"ADD_QUESTION",
+"UPDATE_QUESTION",
+"INVALIDATE_QUESTION"
+]
+},
+"default": [
+"CREATE",
+"UPDATE",
+"INVALIDATE",
+"ADD_QUESTION",
+"UPDATE_QUESTION",
+"INVALIDATE_QUESTION"
+]
+}
+},
+{
+"name": "visibility",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "boolean"
+},
+"default": [
+true,
+false
+]
+}
+},
+{
+"name": "parentItemId",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "parentItemType",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"enum": [
+"COURSE",
+"CHAPTER",
+"TOPIC",
+"CODING_EXERCISE",
+"QUIZ",
+"CAPSTONE_PROJECT"
+]
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "requestedOn"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "DESC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/admin/approval/all": {
+"get": {
+"tags": [
+"approval-controller-admin"
+],
+"operationId": "getAllApprovals_1",
+"parameters": [
+{
+"name": "requestedBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "approvalStatuses",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"PENDING",
+"ACCEPTED",
+"REJECTED"
+]
+},
+"default": [
+"PENDING",
+"ACCEPTED",
+"REJECTED"
+]
+}
+},
+{
+"name": "approvalItems",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"COURSE",
+"CHAPTER",
+"TOPIC",
+"CODING_EXERCISE",
+"QUIZ",
+"CAPSTONE_PROJECT"
+]
+},
+"default": [
+"COURSE",
+"CHAPTER",
+"TOPIC",
+"CODING_EXERCISE",
+"QUIZ"
+]
+}
+},
+{
+"name": "approvalTypes",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"CREATE",
+"UPDATE",
+"INVALIDATE",
+"ADD_QUESTION",
+"UPDATE_QUESTION",
+"INVALIDATE_QUESTION"
+]
+},
+"default": [
+"CREATE",
+"UPDATE",
+"INVALIDATE",
+"ADD_QUESTION",
+"UPDATE_QUESTION",
+"INVALIDATE_QUESTION"
+]
+}
+},
+{
+"name": "visibility",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "boolean"
+},
+"default": [
+true,
+false
+]
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "requestedOn"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "DESC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/admin/approval/all/by-parent": {
+"get": {
+"tags": [
+"approval-controller-admin"
+],
+"operationId": "getAllApprovalsByParent_1",
+"parameters": [
+{
+"name": "requestedBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": ""
+}
+},
+{
+"name": "approvalStatuses",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"PENDING",
+"ACCEPTED",
+"REJECTED"
+]
+},
+"default": [
+"PENDING",
+"ACCEPTED",
+"REJECTED"
+]
+}
+},
+{
+"name": "approvalItem",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "COURSE",
+"enum": [
+"COURSE",
+"CHAPTER",
+"TOPIC",
+"CODING_EXERCISE",
+"QUIZ",
+"CAPSTONE_PROJECT"
+]
+}
+},
+{
+"name": "approvalTypes",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"CREATE",
+"UPDATE",
+"INVALIDATE",
+"ADD_QUESTION",
+"UPDATE_QUESTION",
+"INVALIDATE_QUESTION"
+]
+},
+"default": [
+"CREATE",
+"UPDATE",
+"INVALIDATE",
+"ADD_QUESTION",
+"UPDATE_QUESTION",
+"INVALIDATE_QUESTION"
+]
+}
+},
+{
+"name": "visibility",
+"in": "query",
+"required": false,
+"schema": {
+"type": "array",
+"items": {
+"type": "boolean"
+},
+"default": [
+true,
+false
+]
+}
+},
+{
+"name": "parentItemId",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+},
+{
+"name": "parentItemType",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"enum": [
+"COURSE",
+"CHAPTER",
+"TOPIC",
+"CODING_EXERCISE",
+"QUIZ",
+"CAPSTONE_PROJECT"
+]
+}
+},
+{
+"name": "sortBy",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "requestedOn"
+}
+},
+{
+"name": "sortDirection",
+"in": "query",
+"required": false,
+"schema": {
+"type": "string",
+"default": "DESC",
+"enum": [
+"ASC",
+"DESC"
+]
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 10
+}
+},
+{
+"name": "pageIndex",
+"in": "query",
+"required": false,
+"schema": {
+"type": "integer",
+"format": "int32",
+"default": 0
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+},
+"/api/private/capstone-project/{capstoneProjectIdeId}/stop": {
+"delete": {
+"tags": [
+"capstone-project-controller-private"
+],
+"operationId": "stopIDE",
+"parameters": [
+{
+"name": "capstoneProjectIdeId",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+},
+"security": [
+{
+"JWT": []
+}
+]
+}
+}
+},
+"components": {
+"schemas": {
+"TopicRevisionDTO": {
+"type": "object",
+"properties": {
+"id": {
+"type": "integer",
+"format": "int64"
+},
+"name": {
+"type": "string"
+},
+"description": {
+"type": "string"
+},
+"rankInChapter": {
+"type": "integer",
+"format": "int32"
+}
+}
+},
+"QuizRevisionDTO": {
+"type": "object",
+"properties": {
+"id": {
+"type": "integer",
+"format": "int64"
+},
+"name": {
+"type": "string"
+},
+"description": {
+"type": "string"
+},
+"duration": {
+"type": "integer",
+"format": "int64"
+},
+"rankInTopic": {
+"type": "integer",
+"format": "int32"
+},
+"minimumPercentageToPass": {
+"type": "integer",
+"format": "int32"
+},
+"maxAttempts": {
+"type": "integer",
+"format": "int32"
+}
+}
+},
+"OptionRevisionDTO": {
+"type": "object",
+"properties": {
+"id": {
+"type": "integer",
+"format": "int64"
+},
+"optionId": {
+"type": "integer",
+"format": "int64"
+},
+"optionText": {
+"type": "string"
+},
+"isCorrect": {
+"type": "boolean"
+}
+}
+},
+"QuestionRevisionDTO": {
+"type": "object",
+"properties": {
+"id": {
+"type": "integer",
+"format": "int64"
+},
+"questionText": {
+"type": "string"
+},
+"isMultipleChoice": {
+"type": "boolean"
+},
+"points": {
+"type": "integer",
+"format": "int32"
+},
+"correctOptionExplanation": {
+"type": "string"
+},
+"duration": {
+"type": "integer",
+"format": "int64"
+},
+"difficulty": {
+"type": "string",
+"enum": [
+"BEGINNER",
+"INTERMEDIATE",
+"EXPERT"
+]
+},
+"optionRevisions": {
+"type": "array",
+"items": {
+"$ref": "#/components/schemas/OptionRevisionDTO"
+}
+},
+"isCodingQuestion": {
+"type": "boolean"
+}
+}
+},
+"CodeCaseRevisionDTO": {
+"type": "object",
+"properties": {
+"id": {
+"type": "integer",
+"format": "int64"
+},
+"input": {
+"type": "string"
+},
+"output": {
+"type": "string"
+},
+"timeout": {
+"type": "integer",
+"format": "int32"
+}
+}
+},
+"CodingExerciseRevisionDTO": {
+"type": "object",
+"properties": {
+"id": {
+"type": "integer",
+"format": "int64"
+},
+"name": {
+"type": "string"
+},
+"description": {
+"type": "string"
+},
+"question": {
+"type": "string"
+},
+"marks": {
+"type": "integer",
+"format": "int32"
+},
+"boilerplateCode": {
+"type": "string"
+},
+"solution": {
+"type": "string"
+},
+"maxAttempts": {
+"type": "integer",
+"format": "int32"
+},
+"difficulty": {
+"type": "string",
+"enum": [
+"BEGINNER",
+"INTERMEDIATE",
+"EXPERT"
+]
+},
+"rankInTopic": {
+"type": "integer",
+"format": "int32"
+},
+"minimumPercentageToPass": {
+"type": "integer",
+"format": "int32"
+},
+"runCaseRevisions": {
+"type": "array",
+"items": {
+"$ref": "#/components/schemas/CodeCaseRevisionDTO"
+}
+},
+"submitCaseRevisions": {
+"type": "array",
+"items": {
+"$ref": "#/components/schemas/CodeCaseRevisionDTO"
+}
+},
+"languages": {
+"uniqueItems": true,
+"type": "array",
+"items": {
+"$ref": "#/components/schemas/Language"
+}
+},
+"hint": {
+"type": "string"
+}
+}
+},
+"Language": {
+"type": "object",
+"properties": {
+"name": {
+"type": "string"
+}
+}
+},
+"ChapterRevisionDTO": {
+"type": "object",
+"properties": {
+"id": {
+"type": "integer",
+"format": "int64"
+},
+"name": {
+"type": "string"
+},
+"description": {
+"type": "string"
+},
+"rankInCourse": {
+"type": "integer",
+"format": "int32"
+}
+}
+},
+"CapstoneProjectRevisionDTO": {
+"type": "object",
+"properties": {
+"id": {
+"type": "integer",
+"format": "int64"
+},
+"name": {
+"type": "string"
+},
+"description": {
+"type": "string"
+},
+"difficulty": {
+"type": "string",
+"enum": [
+"BEGINNER",
+"INTERMEDIATE",
+"EXPERT"
+]
+},
+"minPercentage": {
+"type": "number",
+"format": "double"
+},
+"totalTests": {
+"type": "integer",
+"format": "int32"
+},
+"testFiles": {
+"type": "array",
+"items": {
+"type": "string"
+}
+},
+"testStorageLocation": {
+"type": "string"
+},
+"ideTaskDefinition": {
+"type": "string"
+},
+"githubProjectUrl": {
+"type": "string"
+},
+"githubProjectName": {
+"type": "string"
+}
+}
+},
+"CourseRevisionDTO": {
+"type": "object",
+"properties": {
+"id": {
+"type": "integer",
+"format": "int64"
+},
+"name": {
+"type": "string"
+},
+"description": {
+"type": "string"
+},
+"logoKey": {
+"type": "string"
+},
+"thumbnailKey": {
+"type": "string"
+},
+"instructorIds": {
+"uniqueItems": true,
+"type": "array",
+"items": {
+"type": "integer",
+"format": "int64"
+}
+}
+}
+},
+"CapstoneProjectAttemptDetailsWebhookDTO": {
+"type": "object",
+"properties": {
+"passedTests": {
+"type": "integer",
+"format": "int32"
+},
+"failedTests": {
+"type": "integer",
+"format": "int32"
+},
+"totalTests": {
+"type": "integer",
+"format": "int32"
+},
+"commitSHA": {
+"type": "string"
+},
+"passedCases": {
+"type": "array",
+"items": {
+"type": "string"
+}
+},
+"failedCases": {
+"type": "array",
+"items": {
+"$ref": "#/components/schemas/CapstoneProjectFailedCaseDTO"
+}
+}
+}
+},
+"CapstoneProjectFailedCaseDTO": {
+"type": "object",
+"properties": {
+"name": {
+"type": "string"
+},
+"expectedOutput": {
+"type": "string"
+},
+"actualOutput": {
+"type": "string"
+}
+}
+},
+"SecondaryEducation": {
+"type": "object",
+"properties": {
+"id": {
+"type": "integer",
+"format": "int64"
+},
+"yearOfPassing": {
+"type": "string",
+"format": "date-time"
+},
+"certificateUrl": {
+"type": "string"
+},
+"board": {
+"type": "string"
+},
+"school": {
+"type": "string"
+},
+"marks": {
+"type": "integer",
+"format": "int64"
+}
+}
+},
+"SeniorSecondaryEducation": {
+"type": "object",
+"properties": {
+"id": {
+"type": "integer",
+"format": "int64"
+},
+"yearOfPassing": {
+"type": "string",
+"format": "date-time"
+},
+"certificateUrl": {
+"type": "string"
+},
+"board": {
+"type": "string"
+},
+"school": {
+"type": "string"
+},
+"marks": {
+"type": "integer",
+"format": "int64"
+}
+}
+},
+"UndergraduateEducation": {
+"type": "object",
+"properties": {
+"id": {
+"type": "integer",
+"format": "int64"
+},
+"yearOfPassing": {
+"type": "string",
+"format": "date-time"
+},
+"certificateUrl": {
+"type": "string"
+},
+"degree": {
+"type": "string"
+},
+"college": {
+"type": "string"
+},
+"affiliatedUniversity": {
+"type": "string"
+},
+"cgpa": {
+"type": "integer",
+"format": "int64"
+}
+}
+},
+"UserCredentials": {
+"type": "object",
+"properties": {
+"email": {
+"type": "string"
+},
+"password": {
+"type": "string"
+},
+"name": {
+"type": "string"
+},
+"phone": {
+"type": "string"
+},
+"country": {
+"type": "string"
+},
+"linkedInUrl": {
+"type": "string"
+},
+"address": {
+"type": "string"
+},
+"undergraduateEducation": {
+"$ref": "#/components/schemas/UndergraduateEducation"
+},
+"seniorSecondaryEducation": {
+"$ref": "#/components/schemas/SeniorSecondaryEducation"
+},
+"secondaryEducation": {
+"$ref": "#/components/schemas/SecondaryEducation"
+},
+"profilePictureUrl": {
+"type": "string"
+},
+"resumeFileUrl": {
+"type": "string"
+},
+"role": {
+"type": "string",
+"enum": [
+"ROLE_ADMIN",
+"ROLE_EMPLOYEE",
+"ROLE_USER"
+]
+},
+"githubAccessToken": {
+"type": "string"
+},
+"githubUsername": {
+"type": "string"
+},
+"learnerId": {
+"type": "string"
+}
+}
+},
+"OTP": {
+"type": "object",
+"properties": {
+"ttl": {
+"type": "integer",
+"format": "int64"
+},
+"id": {
+"type": "integer",
+"format": "int64"
+},
+"code": {
+"type": "string"
+},
+"email": {
+"type": "string"
+},
+"name": {
+"type": "string"
+},
+"expiresOn": {
+"type": "string",
+"format": "date-time"
+}
+}
+},
+"ContactMessage": {
+"type": "object",
+"properties": {
+"name": {
+"type": "string"
+},
+"email": {
+"type": "string"
+},
+"subject": {
+"type": "string"
+},
+"message": {
+"type": "string"
+}
+}
+},
+"FeedbackDetails": {
+"type": "object",
+"properties": {
+"itemType": {
+"type": "string",
+"enum": [
+"QUIZ",
+"CODING_EXERCISE",
+"CAPSTONE_PROJECT"
+]
+},
+"endpoint": {
+"type": "string"
+},
+"category": {
+"type": "string",
+"enum": [
+"ISSUE",
+"SUGGESTION",
+"GENERAL"
+]
+},
+"message": {
+"type": "string"
+},
+"isResolved": {
+"type": "boolean"
+},
+"submittedOn": {
+"type": "string",
+"format": "date-time"
+},
+"user": {
+"$ref": "#/components/schemas/UserDTO"
+}
+}
+},
+"UserDTO": {
+"type": "object",
+"properties": {
+"id": {
+"type": "integer",
+"format": "int64"
+},
+"email": {
+"type": "string"
+},
+"name": {
+"type": "string"
+},
+"phone": {
+"type": "string"
+},
+"country": {
+"type": "string"
+},
+"isActive": {
+"type": "boolean"
+},
+"role": {
+"type": "string",
+"enum": [
+"ROLE_ADMIN",
+"ROLE_EMPLOYEE",
+"ROLE_USER"
+]
+},
+"active": {
+"type": "boolean",
+"writeOnly": true
+}
+}
+},
+"QuizAnswerRequest": {
+"type": "object",
+"properties": {
+"answers": {
+"type": "object",
+"additionalProperties": {
+"type": "array",
+"items": {
+"type": "integer",
+"format": "int64"
+}
+}
+},
+"totalTimeTaken": {
+"type": "integer",
+"format": "int64"
+}
+}
+},
+"Code": {
+"type": "object",
+"properties": {
+"code": {
+"type": "string"
+},
+"input": {
+"type": "string"
+},
+"executionType": {
+"type": "string",
+"enum": [
+"CUSTOM_INPUT",
+"TEST_CASES",
+"SUBMIT_CASES"
+]
+},
+"duration": {
+"type": "integer",
+"format": "int64"
+},
+"language": {
+"type": "string"
+}
+}
+},
+"EnrollmentDTO": {
+"type": "object",
+"properties": {
+"userId": {
+"type": "integer",
+"format": "int64"
+},
+"courseIds": {
+"type": "array",
+"items": {
+"type": "integer",
+"format": "int64"
+}
+}
+}
+},
+"TechStackName": {
+"type": "object",
+"properties": {
+"name": {
+"type": "string"
+}
+}
+},
+"LanguageName": {
+"type": "object",
+"properties": {
+"name": {
+"type": "string"
+}
+}
+}
+},
+"securitySchemes": {
+"JWT": {
+"type": "http",
+"description": "Bearer token",
+"scheme": "bearer",
+"bearerFormat": "JWT"
+}
+}
+}
 }
